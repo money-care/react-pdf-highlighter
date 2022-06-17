@@ -5,6 +5,7 @@ interface Props {
   highlights: Array<IHighlight>;
   resetHighlights: () => void;
   toggleDocument: () => void;
+  deleteHighlight: (h: IHighlight) => void;
 }
 
 const updateHash = (highlight: IHighlight) => {
@@ -15,18 +16,13 @@ export function Sidebar({
   highlights,
   toggleDocument,
   resetHighlights,
+  deleteHighlight
 }: Props) {
   return (
     <div className="sidebar" style={{ width: "25vw" }}>
       <div className="description" style={{ padding: "1rem" }}>
         <h2 style={{ marginBottom: "1rem" }}>react-pdf-highlighter</h2>
-
-        <p style={{ fontSize: "0.7rem" }}>
-          <a href="https://github.com/agentcooper/react-pdf-highlighter">
-            Open in GitHub
-          </a>
-        </p>
-
+        <p>Upload File <input type="file" id="pdf-upload" onChange={(e) => { console.log(e) }} /></p>
         <p>
           <small>
             To create area highlight hold ⌥ Option key (Alt), then click and
@@ -60,6 +56,7 @@ export function Sidebar({
                 </div>
               ) : null}
             </div>
+            <div className="highlight__delete" onClick={() => deleteHighlight(highlight)}>Delete</div>
             <div className="highlight__location">
               Page {highlight.position.pageNumber}
             </div>

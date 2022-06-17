@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import _ from "lodash";
 
 import {
   PdfLoader,
@@ -44,7 +45,7 @@ const HighlightPopup = ({
     </div>
   ) : null;
 
-const PRIMARY_PDF_URL = "https://arxiv.org/pdf/1708.08021.pdf";
+const PRIMARY_PDF_URL = "/sustainability-report-2021.pdf";
 const SECONDARY_PDF_URL = "https://arxiv.org/pdf/1604.02480.pdf";
 
 const searchParams = new URLSearchParams(document.location.search);
@@ -65,6 +66,16 @@ class App extends Component<{}, State> {
     });
   };
 
+  deleteHighlight = (h: IHighlight) => {
+    console.log("delete")
+    console.log(h)
+    this.setState(state => {
+      let highlights = _.remove(state.highlights, i => i.id !== h.id);
+      console.log(highlights);
+      return { highlights: highlights }
+    });
+  };
+
   toggleDocument = () => {
     const newUrl =
       this.state.url === PRIMARY_PDF_URL ? SECONDARY_PDF_URL : PRIMARY_PDF_URL;
@@ -75,7 +86,7 @@ class App extends Component<{}, State> {
     });
   };
 
-  scrollViewerTo = (highlight: any) => {};
+  scrollViewerTo = (highlight: any) => { };
 
   scrollToHighlightFromHash = () => {
     const highlight = this.getHighlightById(parseIdFromHash());
@@ -122,11 +133,11 @@ class App extends Component<{}, State> {
         } = h;
         return id === highlightId
           ? {
-              id,
-              position: { ...originalPosition, ...position },
-              content: { ...originalContent, ...content },
-              ...rest,
-            }
+            id,
+            position: { ...originalPosition, ...position },
+            content: { ...originalContent, ...content },
+            ...rest,
+          }
           : h;
       }),
     });
@@ -141,6 +152,7 @@ class App extends Component<{}, State> {
           highlights={highlights}
           resetHighlights={this.resetHighlights}
           toggleDocument={this.toggleDocument}
+          deleteHighlight={this.deleteHighlight}
         />
         <div
           style={{
